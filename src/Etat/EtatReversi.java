@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class EtatReversi extends Etat {
 	private Integer grille[][];
-	private static final int SIZE = 7;
+	private static final int SIZE = 8;
 
 	public EtatReversi() {
 		grille = new Integer[SIZE][SIZE]; //0 = noir, 1 = blanc, -1 = vide
@@ -22,10 +22,10 @@ public class EtatReversi extends Etat {
 	private void etatInitial() {
 		for (int i = 0; i < grille.length; i++) {
 			for (int j = 0; j < grille[0].length; j++) {
-				if ((i == SIZE / 2 && j == SIZE / 2) || (i == SIZE / 2 + 1 && j == SIZE / 2 + 1)) {
+				if ((i == SIZE / 2-1 && j == SIZE / 2-1) || (i == SIZE / 2 && j == SIZE / 2 )) {
 					grille[i][j] = 0;
 				}
-				else if ((i == SIZE / 2 && j == SIZE / 2 + 1) || (i == SIZE / 2 + 1 && j == SIZE / 2)) {
+				else if ((i == SIZE / 2-1 && j == SIZE / 2 ) || (i == SIZE / 2  && j == SIZE / 2-1)) {
 					grille[i][j] = 1;
 				}
 				else grille[i][j] = -1;
