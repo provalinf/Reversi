@@ -14,6 +14,5 @@ public class JoueurReversi extends Joueur {
 
 	public void successeurs(){
 		tourJoueur = tourJoueur+1%2; // permet de changer de joueur automatiquement
-
 	}
 }
