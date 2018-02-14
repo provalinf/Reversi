@@ -1,8 +1,10 @@
 package Etat;
 
+import java.util.Arrays;
+
 public class EtatReversi extends Etat {
 	private Integer grille[][];
-	private static final int SIZE = 8;
+	private static final int SIZE = 7;
 
 	public EtatReversi() {
 		grille = new Integer[SIZE][SIZE]; //0 = noir, 1 = blanc, -1 = vide
@@ -23,14 +25,15 @@ public class EtatReversi extends Etat {
 				if ((i == SIZE / 2 && j == SIZE / 2) || (i == SIZE / 2 + 1 && j == SIZE / 2 + 1)) {
 					grille[i][j] = 0;
 				}
-				if ((i == SIZE / 2 && j == SIZE / 2 + 1) || (i == SIZE / 2 + 1 && j == SIZE / 2)) {
+				else if ((i == SIZE / 2 && j == SIZE / 2 + 1) || (i == SIZE / 2 + 1 && j == SIZE / 2)) {
 					grille[i][j] = 1;
-				} else grille[i][j] = -1;
+				}
+				else grille[i][j] = -1;
 			}
 		}
 	}
 
-	public boolean compare(Etat.EtatReversi rev) {
+	public boolean compare(EtatReversi rev) {
 		if (getSize()[0] != rev.getSize()[0] || getSize()[1] != rev.getSize()[1])
 			return false;
 
@@ -46,5 +49,17 @@ public class EtatReversi extends Etat {
 		}
 
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < SIZE; j++) {
+				sb.append(grille[i][j]);
+			}
+			sb.append("\n");
+		}
+		return sb.toString();
 	}
 }
