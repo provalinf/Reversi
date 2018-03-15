@@ -1,7 +1,6 @@
 package Etat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class EtatReversi extends Etat {
@@ -32,13 +31,11 @@ public class EtatReversi extends Etat {
 		grille[getSize()[1] / 2][getSize()[1] / 2] = 0;*/
 		for (int i = 0; i < grille.length; i++) {
 			for (int j = 0; j < grille[0].length; j++) {
-				if ((i == SIZE / 2-1 && j == SIZE / 2-1) || (i == SIZE / 2 && j == SIZE / 2 )) {
+				if ((i == SIZE / 2 - 1 && j == SIZE / 2 - 1) || (i == SIZE / 2 && j == SIZE / 2)) {
 					grille[i][j] = 0;
-				}
-				else if ((i == SIZE / 2-1 && j == SIZE / 2 ) || (i == SIZE / 2  && j == SIZE / 2-1)) {
+				} else if ((i == SIZE / 2 - 1 && j == SIZE / 2) || (i == SIZE / 2 && j == SIZE / 2 - 1)) {
 					grille[i][j] = 1;
-				}
-				else grille[i][j] = -1;
+				} else grille[i][j] = -1;
 			}
 		}
 	}
@@ -63,28 +60,100 @@ public class EtatReversi extends Etat {
 
 	public List<Integer> coupPossibles(int couleur) {
 		ArrayList<Integer> coups = new ArrayList<>();
-		int ligne = 0;
-		while (ligne < getSize()[0]) {
-			int colonne = 0;
-			while (colonne < getSize()[1]) {
-				if (getCase(ligne, colonne) == VIDE) {
-					if (colonne - 1 >= 0) {
-						if (getCase(ligne, colonne - 1) != VIDE) {
+		boolean jouable;
 
+		for (int ligne = 0; ligne < getSize()[0]; ligne++) {
+			for (int colonne = 0; colonne < getSize()[1]; colonne++) {
+				jouable = false;
+				if (ligne - 1 >= 0) {
+					if (colonne - 1 >= 0 && getCase(ligne - 1, colonne - 1) != VIDE && getCase(ligne - 1, colonne - 1) != couleur) {        // Nord-Ouest
+						int i = 2;
+						while (!jouable && ligne - i >= 0 && colonne - i >= 0 && getCase(ligne - i, colonne - i) != VIDE) {
+							if (getCase(ligne - i, colonne - i) == couleur) jouable = true;
+							i++;
+						}
+					}
+					if (!jouable && getCase(ligne - 1, colonne) != VIDE && getCase(ligne - 1, colonne) != couleur) {        // Nord
+						int i = 2;
+						while (!jouable && ligne - i >= 0 && getCase(ligne - i, colonne) != VIDE) {
+							if (getCase(ligne - i, colonne) == couleur) jouable = true;
+							i++;
+						}
+					}
+					if (!jouable && colonne + 1 < getSize()[1] && getCase(ligne - 1, colonne + 1) != VIDE && getCase(ligne - 1, colonne + 1) != couleur) {        // Nord-Est
+						int i = 2;
+						while (!jouable && ligne - i >= 0 && colonne + i < getSize()[1] && getCase(ligne - i, colonne + i) != VIDE) {
+							if (getCase(ligne - i, colonne + i) == couleur) jouable = true;
+							i++;
 						}
 					}
 				}
+
+				if (!jouable && colonne + 1 < getSize()[1] && getCase(ligne, colonne + 1) != VIDE && getCase(ligne, colonne + 1) != couleur) {        // Est
+					int i = 2;
+					while (!jouable && colonne + i < getSize()[1] && getCase(ligne, colonne + i) != VIDE) {
+						if (getCase(ligne, colonne + i) == couleur) jouable = true;
+						i++;
+					}
+				}
+				if (!jouable && colonne - 1 >= 0 && getCase(ligne, colonne - 1) != VIDE && getCase(ligne, colonne - 1) != couleur) {        // Ouest
+					int i = 2;
+					while (!jouable && colonne - i >= 0 && getCase(ligne, colonne - i) != VIDE) {
+						if (getCase(ligne, colonne - i) == couleur) jouable = true;
+						i++;
+					}
+				}
+
+				if (ligne + 1 < getSize()[0]) {
+					if (!jouable && colonne - 1 >= 0 && getCase(ligne + 1, colonne - 1) != VIDE && getCase(ligne + 1, colonne - 1) != couleur) {        // Sud-Ouest
+						int i = 2;
+						while (!jouable && ligne + i < getSize()[0] && colonne - i >= 0 && getCase(ligne + i, colonne - i) != VIDE) {
+							if (getCase(ligne + i, colonne - i) == couleur) jouable = true;
+							i++;
+						}
+					}
+					if (!jouable && getCase(ligne + 1, colonne) != VIDE && getCase(ligne + 1, colonne) != couleur) {        // Sud
+						int i = 2;
+						while (!jouable && ligne + i < getSize()[0] && getCase(ligne + i, colonne) != VIDE) {
+							if (getCase(ligne + i, colonne) == couleur) jouable = true;
+							i++;
+						}
+					}
+					if (!jouable && colonne + 1 < getSize()[1] && getCase(ligne + 1, colonne + 1) != VIDE && getCase(ligne + 1, colonne + 1) != couleur) {        // Sud-Est
+						int i = 2;
+						while (!jouable && ligne + i < getSize()[0] && colonne + i < getSize()[1] && getCase(ligne + i, colonne + i) != VIDE) {
+							if (getCase(ligne + i, colonne + i) == couleur) jouable = true;
+							i++;
+						}
+					}
+				}
+				if (jouable) coups.add(getNumCase(ligne, colonne));
+
 			}
 		}
 		return coups;
 	}
+
+	public void printNumCases() {
+		for (int ligne = 0; ligne < getSize()[0]; ligne++) {
+			for (int colonne = 0; colonne < getSize()[1]; colonne++) {
+				System.out.print(getNumCase(ligne, colonne) + "\t");
+			}
+			System.out.println();
+		}
+	}
+
+	public int getNumCase(int ligne, int colonne) {
+		return colonne + (getSize()[1] * ligne);
+	}
+
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
-				sb.append(grille[i][j]+"\t");
+				sb.append(grille[i][j] + "\t");
 			}
 			sb.append("\n");
 		}
