@@ -64,6 +64,144 @@ public class EtatReversi extends Etat {
 		return true;
 	}
 
+	public int couleurAdverse(int color) {
+		return color == NOIR ? BLANC : NOIR;
+	}
+
+	public void setCoup(int rowCoord, int colCoord, int color) {
+		ArrayList<int[]> casesCaptures = new ArrayList<>();
+		ArrayList<int[]> casesPotentielles = new ArrayList<>();
+
+		if (colCoord + 1 < getSize()[1]) {
+			if (getCase(rowCoord, colCoord + 1) == couleurAdverse(color)) {    // EST
+				for (int col = colCoord + 1; col < getSize()[1]; col++) {
+					if (getCase(rowCoord, col) == couleurAdverse(color)) {
+						casesPotentielles.add(new int[]{rowCoord, col});
+					} else if (getCase(rowCoord, col) == color) {
+						casesCaptures.addAll(casesPotentielles);
+						break;
+					}
+				}
+			}
+
+			if (rowCoord + 1 < getSize()[0]) {
+				if (getCase(rowCoord + 1, colCoord + 1) == couleurAdverse(color)) {    // NORD-EST
+					int row = rowCoord + 1, col = colCoord + 1;
+					while (row < getSize()[0] && col < getSize()[1]) {
+						if (getCase(row, col) == couleurAdverse(color)) {
+							casesPotentielles.add(new int[]{row, col});
+						} else if (getCase(row, col) == color) {
+							casesCaptures.addAll(casesPotentielles);
+							break;
+						}
+						row++;
+						col++;
+					}
+					casesPotentielles.clear();
+				}
+			}
+		}
+
+		if (rowCoord + 1 < getSize()[0]) {
+			if (getCase(rowCoord + 1, colCoord) == couleurAdverse(color)) {    // NORD
+				for (int row = rowCoord + 1; row < getSize()[0]; row++) {
+					if (getCase(row, colCoord) == couleurAdverse(color)) {
+						casesPotentielles.add(new int[]{row, colCoord});
+					} else if (getCase(row, colCoord) == color) {
+						casesCaptures.addAll(casesPotentielles);
+						break;
+					}
+				}
+				casesPotentielles.clear();
+			}
+
+			if (colCoord - 1 >= 0) {
+				if (getCase(rowCoord + 1, colCoord - 1) == couleurAdverse(color)) {    // NORD-OUEST
+					int row = rowCoord + 1, col = colCoord - 1;
+					while (row < getSize()[0] && col >= 0) {
+						if (getCase(row, col) == couleurAdverse(color)) {
+							casesPotentielles.add(new int[]{row, col});
+						} else if (getCase(row, col) == color) {
+							casesCaptures.addAll(casesPotentielles);
+							break;
+						}
+						row++;
+						col--;
+					}
+					casesPotentielles.clear();
+				}
+			}
+		}
+
+
+		if (colCoord - 1 >= 0) {
+			if (getCase(rowCoord, colCoord - 1) == couleurAdverse(color)) {    // OUEST
+				for (int col = colCoord - 1; col >= 0; col--) {
+					if (getCase(rowCoord, col) == couleurAdverse(color)) {
+						casesPotentielles.add(new int[]{rowCoord, col});
+					} else if (getCase(rowCoord, col) == color) {
+						casesCaptures.addAll(casesPotentielles);
+						break;
+					}
+				}
+				casesPotentielles.clear();
+			}
+
+			if (rowCoord - 1 >= 0) {
+				if (getCase(rowCoord - 1, colCoord - 1) == couleurAdverse(color)) {    // SUD-OUEST
+					int row = rowCoord - 1, col = colCoord - 1;
+					while (row >= 0 && col >= 0) {
+						if (getCase(row, col) == couleurAdverse(color)) {
+							casesPotentielles.add(new int[]{row, col});
+						} else if (getCase(row, col) == color) {
+							casesCaptures.addAll(casesPotentielles);
+							break;
+						}
+						row--;
+						col--;
+					}
+					casesPotentielles.clear();
+				}
+			}
+		}
+
+
+		if (rowCoord - 1 >= 0) {
+			if (getCase(rowCoord - 1, colCoord) == couleurAdverse(color)) {    // SUD
+				for (int row = rowCoord - 1; row >= 0; row--) {
+					if (getCase(row, colCoord) == couleurAdverse(color)) {
+						casesPotentielles.add(new int[]{row, colCoord});
+					} else if (getCase(row, colCoord) == color) {
+						casesCaptures.addAll(casesPotentielles);
+						break;
+					}
+				}
+				casesPotentielles.clear();
+			}
+
+			if (colCoord + 1 < getSize()[1]) {
+				if (getCase(rowCoord - 1, colCoord + 1) == couleurAdverse(color)) {    // SUD-EST
+					int row = rowCoord - 1, col = colCoord + 1;
+					while (row >= 0 && col < getSize()[1]) {
+						if (getCase(row, col) == couleurAdverse(color)) {
+							casesPotentielles.add(new int[]{row, col});
+						} else if (getCase(row, col) == color) {
+							casesCaptures.addAll(casesPotentielles);
+							break;
+						}
+						row--;
+						col++;
+					}
+					casesPotentielles.clear();
+				}
+			}
+		}
+
+		for (int[] capture : casesCaptures) {
+			setCase(capture[0], capture[1], color);
+		}
+	}
+
 	public List<Integer> coupPossibles(int couleur) {
 		ArrayList<Integer> coups = new ArrayList<>();
 		boolean jouable;
@@ -181,6 +319,7 @@ public class EtatReversi extends Etat {
 		}
 		int[] coord = getCoordCase(caseChoisie);
 		setCase(coord[0], coord[1], couleur);
+		setCoup(coord[0], coord[1], couleur);
 	}
 
 	public boolean isCoupPossible() {
