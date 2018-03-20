@@ -211,4 +211,17 @@ public class EtatReversi extends Etat {
 		if (nbWhite == nbBlack) return -1;    // Egalité
 		return nbBlack > nbWhite ? NOIR : BLANC;
 	}
+
+	public Etat minimax(int c){
+		int scoreMax = -1000;
+		int score = 0;
+		List<Integer> successeur = coupPossibles(1);
+		for (int i = 0; i < successeur.size(); i++) {
+			score = evaluation(c, successeur.get(i));
+		}
+	}
+
+	private int evaluation(int c, Integer integer) {
+
+	}
 }
