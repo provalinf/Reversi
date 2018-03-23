@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class EtatReversi extends Etat {
-	private Integer grille[][];
+	private int grille[][];
 	private static final int SIZE = 8;
 	private static final int VIDE = -1;
 	public static final int NOIR = 0;
 	public static final int BLANC = 1;
 
 	public EtatReversi() {
-		grille = new Integer[SIZE][SIZE]; //0 = noir, 1 = blanc, -1 = vide
+		grille = new int[SIZE][SIZE]; //0 = noir, 1 = blanc, -1 = vide
 		/*for (Integer[] aGrille : grille) Arrays.fill(aGrille, -1);*/
 		etatInitial();
 	}
