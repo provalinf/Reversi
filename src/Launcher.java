@@ -9,7 +9,7 @@ public class Launcher {
 
 	public static void main(String[] args) {
 		EtatReversi e = new EtatReversi();
-		Joueur j = new JoueurReversi();
+		Joueur j = new JoueurReversi(e);
 
 		e.printNumCases();
 		System.out.println(e.coupPossibles(0));
