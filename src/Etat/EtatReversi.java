@@ -6,16 +6,45 @@ import java.util.Scanner;
 
 public class EtatReversi extends Etat {
 	private int grille[][];
+	private int tabPoids[][];
+	private static final int POIDSMAX = 500;
 	private static final int SIZE = 8;
 	private static final int VIDE = -1;
 	public static final int NOIR = 0;
 	public static final int BLANC = 1;
 
 	public EtatReversi() {
+		tabPoids = new int[SIZE][SIZE];
 		grille = new int[SIZE][SIZE]; //0 = noir, 1 = blanc, -1 = vide
 		/*for (Integer[] aGrille : grille) Arrays.fill(aGrille, -1);*/
 		etatInitial();
+		setPoids();
+
 	}
+
+	private void setPoids() {
+		for (int i = 0; i < tabPoids.length; i++) {
+			for (int j = 0; j < tabPoids[0].length; j++) {
+				if((i==0 && j ==0)||(i==SIZE-1&& j ==SIZE-1)||(i== 0 && j == SIZE-1)||(i == SIZE-1 && j == 0)){
+					tabPoids[i][j] = POIDSMAX;
+				}
+/*				if((i==0 && j ==1)||(i==SIZE-2&& j ==SIZE-1)||(i== 0 && j == SIZE-2)||(i == SIZE-2 && j == 0)){
+					tabPoids[i][j] = POIDSMAX;
+				}*/
+				else if((i==1 && j ==1)||(i==SIZE-2&& j ==SIZE-2)||(i== 1 && j == SIZE-2)||(i == SIZE-2 && j == 1)){
+					tabPoids[i][j] = -POIDSMAX/2;
+				}
+				else tabPoids[i][j] = 0;
+			}
+		}
+		for (int i = 0; i < tabPoids.length; i++) {
+			for (int j = 0; j < tabPoids[0].length; j++) {
+				System.out.print(tabPoids[i][j]+ "\t");
+			}
+			System.out.println("\t");
+		}
+	}
+
 
 	public int getCase(int ligne, int colonne) {
 		return grille[ligne][colonne];
