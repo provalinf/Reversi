@@ -9,11 +9,12 @@ public class Launcher {
 
 	public static void main(String[] args) {
 		EtatReversi e = new EtatReversi();
-		Joueur j = new JoueurReversi(e);
+		Joueur b = new JoueurReversi(e, BLANC);
+		Joueur n = new JoueurReversi(e, NOIR);
 
-		e.printNumCases();
+		/*e.printNumCases();
 		System.out.println(e.coupPossibles(0));
-		System.out.println(e.coupPossibles(1));
+		System.out.println(e.coupPossibles(1));*/
 		int lastColor = NOIR;
 		System.out.println(e.toString());
 		while (e.isCoupPossible()) {
