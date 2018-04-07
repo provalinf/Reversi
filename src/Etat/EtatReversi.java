@@ -428,4 +428,39 @@ public class EtatReversi extends Etat {
                 if (col == couleurJoueur) count++;
         return count;
     }
+
+    public int importance(int couleur) {
+        int somme = 0;
+
+        for (int i = 0; i < tabPoids.length; i++) {
+            for (int j = 0; j < tabPoids[0].length; j++) {
+                if (getCase(i, j) == couleur) {
+                    if (i == 0 && j == 0) {
+                        tabPoids[i][j + 1] = -tabPoids[i][j + 1];
+                        tabPoids[i + 1][j + 1] = -tabPoids[i + 1][j + 1];
+                        tabPoids[i + 1][j] = -tabPoids[i + 1][j];
+                    }
+                    if (i == 0 && j == SIZE - 1) {
+                        tabPoids[i][j - 1] = -tabPoids[i][j - 1];
+                        tabPoids[i + 1][j - 1] = -tabPoids[i + 1][j - 1];
+                        tabPoids[i + 1][j] = -tabPoids[i + 1][j];
+                    }
+                    if (i == SIZE - 1 && j == 0) {
+                        tabPoids[i - 1][j] = -tabPoids[i - 1][j];
+                        tabPoids[i - 1][j + 1] = -tabPoids[i - 1][j + 1];
+                        tabPoids[i][j + 1] = -tabPoids[i][j + 1];
+                    }
+                    if (i == SIZE - 1 && j == SIZE - 1) {
+                        tabPoids[i - 1][j] = -tabPoids[i - 1][j];
+                        tabPoids[i - 1][j - 1] = -tabPoids[i - 1][j - 1];
+                        tabPoids[i][j - 1] = -tabPoids[i][j - 1];
+                    }
+
+                    somme += tabPoids[i][j];
+                }
+            }
+
+        }
+        return somme;
+    }
 }
