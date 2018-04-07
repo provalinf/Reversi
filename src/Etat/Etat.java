@@ -1,4 +1,5 @@
 package Etat;
 
-public abstract class Etat {
+public class Etat {
+    protected Integer grille[][];
 }
