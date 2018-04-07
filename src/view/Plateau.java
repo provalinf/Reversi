@@ -57,7 +57,7 @@ public class Plateau {
 
 	public void dessinerPion(int posX, int posY, Color color) {
 		dw.setColor(color);
-		System.out.println((POS_PLATEAU + posY * TAILLE_CASE + TAILLE_PION / 2 + (TAILLE_CASE - TAILLE_PION) / 2) + " " + (POS_PLATEAU + posX * TAILLE_CASE + TAILLE_PION / 2 + (TAILLE_CASE - TAILLE_PION) / 2));
+		//System.out.println((POS_PLATEAU + posY * TAILLE_CASE + TAILLE_PION / 2 + (TAILLE_CASE - TAILLE_PION) / 2) + " " + (POS_PLATEAU + posX * TAILLE_CASE + TAILLE_PION / 2 + (TAILLE_CASE - TAILLE_PION) / 2));
 		dw.fillCircle(POS_PLATEAU + posY * TAILLE_CASE + TAILLE_PION / 2 + (TAILLE_CASE - TAILLE_PION) / 2, POS_PLATEAU + posX * TAILLE_CASE + TAILLE_PION / 2 + (TAILLE_CASE - TAILLE_PION) / 2, TAILLE_PION / 2);
 	}
 
@@ -70,7 +70,7 @@ public class Plateau {
 		dw.waitMousePress();
 		int x = dw.getMouseX();
 		int y = dw.getMouseY();
-		System.out.println(x + " " + y);
+		//System.out.println(x + " " + y);
 		if (x > POS_PLATEAU && x < TAILLE_CASE * etat.getSize()[0]) {
 			if (y > POS_PLATEAU && y < TAILLE_CASE * etat.getSize()[1]) {
 				int caseX = (x - POS_PLATEAU) / TAILLE_CASE;
@@ -79,7 +79,7 @@ public class Plateau {
 				return new int[]{caseY, caseX};
 			}
 		}
-		System.out.println("à coté");
+		System.out.println("clic à coté");
 		return clicCase();
 	}
 
