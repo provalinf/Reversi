@@ -53,7 +53,7 @@ public class JoueurReversi extends Joueur {
 	 * @return
 	 */
 	public int eval2(EtatReversi etat, int couleurJoueur) {
-		return 0;
+		return etat.importance(couleurJoueur);
 	}
 
 	/**
