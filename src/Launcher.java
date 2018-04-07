@@ -17,12 +17,12 @@ public class Launcher {
 		DrawingWindow dw = new DrawingWindow("Reversi", 1200, 700);
 		Plateau plateau = new Plateau(dw, e);
 
-		e.printNumCases();
+		//e.printNumCases();
 		/*e.printNumCases();
 		System.out.println(e.coupPossibles(0));
 		System.out.println(e.coupPossibles(1));*/
 		int lastColor = NOIR;
-		System.out.println(e.toString());
+		//System.out.println(e.toString());
 		while (e.isCoupPossible()) {
 			plateau.dessinerPlateau();
 			int[] coordCaseClic = plateau.clicCase();
