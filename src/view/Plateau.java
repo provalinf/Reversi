@@ -64,6 +64,7 @@ public class Plateau {
 	public void dessinerNumCase(int posX, int posY) {
 		dw.setColor(Color.WHITE);
 		dw.drawText(POS_PLATEAU + posY * TAILLE_CASE + TAILLE_CASE / 2, POS_PLATEAU + posX * TAILLE_CASE + TAILLE_CASE / 2, Integer.toString(etat.getNumCase(posX, posY)));
+		dw.drawText(POS_PLATEAU-10 + posY * TAILLE_CASE + TAILLE_CASE / 2, POS_PLATEAU+12 + posX * TAILLE_CASE + TAILLE_CASE / 2, "("+posX+","+posY+")");
 	}
 
 	public int[] clicCase() {

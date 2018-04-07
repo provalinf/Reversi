@@ -6,13 +6,14 @@ import view.Plateau;
 
 import static Etat.EtatReversi.BLANC;
 import static Etat.EtatReversi.NOIR;
+import static joueur.JoueurReversi.PROFONDEUR;
 
 public class Launcher {
 
 	public static void main(String[] args) {
 		EtatReversi e = new EtatReversi();
-		Joueur b = new JoueurReversi(e, BLANC);
-		Joueur n = new JoueurReversi(e, NOIR);
+		JoueurReversi b = new JoueurReversi(e, BLANC);
+		JoueurReversi n = new JoueurReversi(e, NOIR);
 
 		DrawingWindow dw = new DrawingWindow("Reversi", 1200, 700);
 		Plateau plateau = new Plateau(dw, e);
@@ -25,15 +26,32 @@ public class Launcher {
 		//System.out.println(e.toString());
 		while (e.isCoupPossible()) {
 			plateau.dessinerPlateau();
-			int[] coordCaseClic = plateau.clicCase();
+			/*int[] coordCaseClic = plateau.clicCase();
 			while (!e.coupPossibles(lastColor).contains(e.getNumCase(coordCaseClic[0], coordCaseClic[1]))) {
 				System.out.println("Coup impossible");
 				System.out.println("Cliquez sur une autre case");
 				coordCaseClic = plateau.clicCase();
 			}
 			e.setCase(coordCaseClic[0], coordCaseClic[1], lastColor);
-			e.setCoup(coordCaseClic[0], coordCaseClic[1], lastColor);
-
+			e.setCoup(coordCaseClic[0], coordCaseClic[1], lastColor);*/
+			System.out.println("BLANC");
+			b.max(e, b.getColorPlayer(), PROFONDEUR);
+			plateau.dessinerPlateau();
+			System.out.println();
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			System.out.println("NOIR");
+			n.max(e, n.getColorPlayer(), PROFONDEUR);
+			plateau.dessinerPlateau();
+			System.out.println();
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
 			System.out.println("Les " + lastColor + " doivent jouer");
 			//e.jeuTerminal(lastColor);
 			if (e.coupPossibles(lastColor == NOIR ? BLANC : NOIR).size() > 0) {

@@ -10,4 +10,8 @@ public abstract class Joueur {
 		this.etat = etat;
 		this.colorPlayer = colorPlayer;
 	}
+
+	public int getColorPlayer() {
+		return colorPlayer;
+	}
 }

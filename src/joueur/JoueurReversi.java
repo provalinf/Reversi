@@ -7,7 +7,7 @@ import java.util.List;
 public class JoueurReversi extends Joueur {
 
 	private int tourJoueur;
-	private static final int PROFONDEUR = 4;
+	public static final int PROFONDEUR = 4;
 
 
 	public JoueurReversi(EtatReversi e, int colorPlayer) {
@@ -71,12 +71,18 @@ public class JoueurReversi extends Joueur {
 		if (profondeur == 0 || !etat.isCoupPossible()) return eval0(etat, couleurJoueur);
 
 		List<Integer> coupsPossibles = etat.coupPossibles(couleurJoueur);
+		if (profondeur == PROFONDEUR) {
+			for (Integer cp : coupsPossibles) {
+				System.out.println(etat.getCoordCase(cp)[0] + "," + etat.getCoordCase(cp)[1]);
+			}
+		}
 		int max = 0;
 		int[] bestCoup = null;
 
 		for (Integer coupPossible : coupsPossibles) {
 			EtatReversi tmp = etat.duplicateEtatReversi();
 			int[] coordCoup = etat.getCoordCase(coupPossible);
+			tmp.setCase(coordCoup[0], coordCoup[1], couleurJoueur);
 			tmp.setCoup(coordCoup[0], coordCoup[1], couleurJoueur);
 			int val = min(tmp, etat.couleurAdverse(couleurJoueur), profondeur - 1);
 
@@ -84,14 +90,24 @@ public class JoueurReversi extends Joueur {
 			if (max < val) {
 				max = val;
 				bestCoup = coordCoup.clone();
+				if (profondeur == PROFONDEUR) {
+					System.out.println("best coup " + couleurJoueur + " " + bestCoup[0] + "," + bestCoup[1]);
+				}
 			}
 		}
 
-		if (coupsPossibles.size() != 0 && bestCoup != null)
+		if (coupsPossibles.size() != 0 && bestCoup != null) {
+			if (profondeur == PROFONDEUR) {
+				System.out.println("best coup---> " + couleurJoueur + " " + bestCoup[0] + "," + bestCoup[1]);
+			}
+			etat.setCase(bestCoup[0], bestCoup[1], couleurJoueur);
 			etat.setCoup(bestCoup[0], bestCoup[1], couleurJoueur);
+
+		}
 
 		return max;
 	}
+
 
 	public int min(EtatReversi etat, int couleurJoueur, int profondeur) {
 		if (profondeur == 0 || !etat.isCoupPossible()) return eval0(etat, couleurJoueur);
@@ -103,6 +119,7 @@ public class JoueurReversi extends Joueur {
 		for (Integer coupPossible : coupsPossibles) {
 			EtatReversi tmp = etat.duplicateEtatReversi();
 			coordCoup = etat.getCoordCase(coupPossible);
+			tmp.setCase(coordCoup[0], coordCoup[1], couleurJoueur);
 			tmp.setCoup(coordCoup[0], coordCoup[1], couleurJoueur);
 			int val = max(tmp, etat.couleurAdverse(couleurJoueur), profondeur - 1);
 
@@ -110,8 +127,13 @@ public class JoueurReversi extends Joueur {
 			if (min > val) min = val;
 		}
 
-		if (coupsPossibles.size() == 0) min = 0;
-		else etat.setCoup(coordCoup[0], coordCoup[1], couleurJoueur);
+		if (coupsPossibles.size() == 0) {
+			min = 0;
+		} else {
+			etat.setCase(coordCoup[0], coordCoup[1], couleurJoueur);
+			etat.setCoup(coordCoup[0], coordCoup[1], couleurJoueur);
+		}
+
 
 		return min;
 	}
