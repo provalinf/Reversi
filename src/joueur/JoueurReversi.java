@@ -4,13 +4,13 @@ import Etat.EtatReversi;
 import view.Plateau;
 
 import java.util.List;
-
-import static Etat.EtatReversi.NOIR;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class JoueurReversi extends Joueur {
 
 	private int tourJoueur;
-	public static final int PROFONDEUR = 6;
+	public static final int PROFONDEUR = 4;
 	private Plateau plateau;
 
 
@@ -36,6 +36,42 @@ public class JoueurReversi extends Joueur {
 	 */
 	public int eval0(EtatReversi etat, int couleurJoueur) {
 		return etat.getNbPion(couleurJoueur);
+	}
+
+	public int evalMonteCarlo(EtatReversi etat, int couleurJoueur) {
+		int nbParties = 0, nbVictoire = 0;
+		List<Integer> coupsPossibles = etat.coupPossibles(couleurJoueur);
+		for (Integer coupPossible : coupsPossibles) {
+			EtatReversi tmp = etat.duplicateEtatReversi();
+			int[] coordCoup = etat.getCoordCase(coupPossible);
+			tmp.setCase(coordCoup[0], coordCoup[1], couleurJoueur);
+			tmp.setCoup(coordCoup[0], coordCoup[1], couleurJoueur);
+
+			int couleurAdv = etat.couleurAdverse(couleurJoueur);
+			List<Integer> coupsPossiblesAdv = etat.coupPossibles(couleurAdv);
+			EtatReversi tmp2 = etat.duplicateEtatReversi();
+			Random randd = new Random();
+			while (coupsPossiblesAdv.size() > 0) {
+				//System.out.print(".");
+				int rand = randd.nextInt(coupsPossiblesAdv.size());
+				int[] coordCoup2 = tmp2.getCoordCase(coupsPossiblesAdv.get(rand));
+				tmp2.setCase(coordCoup2[0], coordCoup2[1], couleurAdv);
+				tmp2.setCoup(coordCoup2[0], coordCoup2[1], couleurAdv);
+
+				if (!tmp2.isCoupPossible() && tmp2.getWinner() == couleurJoueur) {
+					nbVictoire++;
+					nbParties++;
+				} else if (!tmp2.isCoupPossible() && tmp2.getWinner() != couleurJoueur) {
+					nbParties++;
+				}
+
+				couleurAdv = tmp2.couleurAdverse(couleurAdv);
+				coupsPossiblesAdv = tmp2.coupPossibles(couleurAdv);
+			}
+		}
+		if (nbParties == 0) return -10000;
+		//System.out.println("nbpartie " + nbParties + ", nbvictoire " + nbVictoire + " result=" + (2 * (nbVictoire / nbParties) - 1));
+		return 2 * (nbVictoire / nbParties) - 1;
 	}
 
 	/**
@@ -119,6 +155,7 @@ public class JoueurReversi extends Joueur {
 			if (numEval == 0) return eval0(etat, couleurJoueur);
 			if (numEval == 1) return eval1(etat, couleurJoueur);
 			if (numEval == 2) return eval2(etat, couleurJoueur);
+			if (numEval == 3) return evalMonteCarlo(etat, couleurJoueur);
 		}
 		List<Integer> coupsPossibles = etat.coupPossibles(couleurJoueur);
 		if (couleurJoueur != colorPlayer) {
@@ -154,6 +191,7 @@ public class JoueurReversi extends Joueur {
 			if (numEval == 0) return eval0(etat, couleurJoueur);
 			if (numEval == 1) return eval1(etat, couleurJoueur);
 			if (numEval == 2) return eval2(etat, couleurJoueur);
+			if (numEval == 3) return evalMonteCarlo(etat, couleurJoueur);
 		}
 		List<Integer> coupsPossibles = etat.coupPossibles(couleurJoueur);
 		if (couleurJoueur != colorPlayer) {
@@ -183,7 +221,7 @@ public class JoueurReversi extends Joueur {
 		}
 	}
 
-	public int max(EtatReversi etat, int couleurJoueur, int profondeur, int numEval) {
+	/*public int max(EtatReversi etat, int couleurJoueur, int profondeur, int numEval) {
 		if (profondeur == 0 || !etat.isCoupPossible()) {
 			if (numEval == 0) return eval0(etat, couleurJoueur);
 			if (numEval == 1) return eval1(etat, couleurJoueur);
@@ -255,7 +293,7 @@ public class JoueurReversi extends Joueur {
 
 
 		return min;
-	}
+	}*/
 
 	public void debug(Plateau plateau) {
 		this.plateau = plateau;
