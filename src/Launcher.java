@@ -44,7 +44,7 @@ public class Launcher {
 				e1.printStackTrace();
 			}
 
-			int[] resB = b.DecisionMinimax(e, PROFONDEUR, 1);
+			int[] resB = b.DecisionMinimax(e, PROFONDEUR, 0, true);
 			if (resB.length == 1) {
 				System.out.println("Perdu");
 			} else {
@@ -61,7 +61,7 @@ public class Launcher {
 			}
 			System.out.println("NOIR");
 			//n.max(e, n.getColorPlayer(), PROFONDEUR, 0);
-			int[] resN = n.DecisionMinimax(e, PROFONDEUR, 2);
+			int[] resN = n.DecisionMinimax(e, PROFONDEUR, 0, true);
 			if (resN.length == 1) {
 				System.out.println("Perdu");
 			} else {

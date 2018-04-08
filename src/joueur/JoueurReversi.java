@@ -10,7 +10,7 @@ import static Etat.EtatReversi.NOIR;
 public class JoueurReversi extends Joueur {
 
 	private int tourJoueur;
-	public static final int PROFONDEUR = 5;
+	public static final int PROFONDEUR = 6;
 	private Plateau plateau;
 
 
@@ -71,7 +71,7 @@ public class JoueurReversi extends Joueur {
 		return 0;
 	}
 
-	public int[] DecisionMinimax(EtatReversi etat, int profondeur, int numEval) {
+	public int[] DecisionMinimax(EtatReversi etat, int profondeur, int numEval, boolean elagage) {
 		List<Integer> coupsPossibles = etat.coupPossibles(colorPlayer);
 		int[] bestCoup = new int[0];
 		int scoreMax = -10000;
@@ -82,22 +82,27 @@ public class JoueurReversi extends Joueur {
 			int[] coordCoup = etat.getCoordCase(coupPossible);
 			tmp.setCase(coordCoup[0], coordCoup[1], colorPlayer);
 			tmp.setCoup(coordCoup[0], coordCoup[1], colorPlayer);
-			int score = evaluation(tmp, profondeur, tmp.couleurAdverse(colorPlayer), numEval);
+
+			int score;
+			if (elagage)
+				score = evaluationAlphaBeta(tmp, profondeur, tmp.couleurAdverse(colorPlayer), numEval, -10000, 10000);
+			else score = evaluation(tmp, profondeur, tmp.couleurAdverse(colorPlayer), numEval);
+
 			if (score >= scoreMax) {
 				bestCoup = coordCoup.clone();
 				scoreMax = score;
-				System.out.println("PAF -->>>>>>>>:"+score+" :"+bestCoup[0]+","+bestCoup[1]);
+				/*System.out.println("PAF -->>>>>>>>:" + score + " :" + bestCoup[0] + "," + bestCoup[1]);
 				if (colorPlayer == NOIR) {
 					System.out.println();
 					for (int i = 0; i < etat.tabPoids.length; i++) {
 						for (int j = 0; j < etat.tabPoids[0].length; j++) {
-							System.out.print(etat.tabPoids[i][j]+"\t");
+							System.out.print(etat.tabPoids[i][j] + "\t");
 						}
 						System.out.println();
 					}
 					System.out.println();
 					System.out.println();
-				}
+				}*/
 			}
 		}
 
@@ -139,7 +144,7 @@ public class JoueurReversi extends Joueur {
 		}
 	}
 
-	private int evaluationAlphaBeta(EtatReversi etat, int profondeur, int couleurJoueur, int numEval) {
+	private int evaluationAlphaBeta(EtatReversi etat, int profondeur, int couleurJoueur, int alpha, int beta, int numEval) {
 		if (etat.coupPossibles(couleurJoueur).size() == 0) {
 			if (etat.getWinner() == couleurJoueur) return 10000;
 			if (etat.getWinner() == etat.couleurAdverse(couleurJoueur)) return -10000;
@@ -158,7 +163,9 @@ public class JoueurReversi extends Joueur {
 				int[] coordCoup = etat.getCoordCase(coupPossible);
 				tmp.setCase(coordCoup[0], coordCoup[1], couleurJoueur);
 				tmp.setCoup(coordCoup[0], coordCoup[1], couleurJoueur);
-				scoreMax = Math.max(scoreMax, evaluation(tmp, profondeur - 1, tmp.couleurAdverse(couleurJoueur), numEval));
+				scoreMax = Math.max(scoreMax, evaluationAlphaBeta(tmp, profondeur - 1, tmp.couleurAdverse(couleurJoueur), alpha, beta, numEval));
+				if (scoreMax >= beta) return scoreMax;    // coupure bêta
+				alpha = Math.max(alpha, scoreMax);
 			}
 			return scoreMax;
 		} else {
@@ -168,7 +175,9 @@ public class JoueurReversi extends Joueur {
 				int[] coordCoup = etat.getCoordCase(coupPossible);
 				tmp.setCase(coordCoup[0], coordCoup[1], couleurJoueur);
 				tmp.setCoup(coordCoup[0], coordCoup[1], couleurJoueur);
-				scoreMin = Math.min(scoreMin, evaluation(tmp, profondeur - 1, tmp.couleurAdverse(couleurJoueur), numEval));
+				scoreMin = Math.min(scoreMin, evaluationAlphaBeta(tmp, profondeur - 1, tmp.couleurAdverse(couleurJoueur), alpha, beta, numEval));
+				if (scoreMin <= alpha) return scoreMin;    // coupure alpha
+				beta = Math.min(beta, scoreMin);
 			}
 			return scoreMin;
 		}
