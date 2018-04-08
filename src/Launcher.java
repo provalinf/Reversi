@@ -35,20 +35,20 @@ public class Launcher {
 			e.setCase(coordCaseClic[0], coordCaseClic[1], lastColor);
 			e.setCoup(coordCaseClic[0], coordCaseClic[1], lastColor);*/
 			System.out.println("BLANC");
-			b.max(e, b.getColorPlayer(), PROFONDEUR);
+			b.max(e, b.getColorPlayer(), PROFONDEUR, 2);
 			plateau.dessinerPlateau();
 			System.out.println();
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(500);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
 			System.out.println("NOIR");
-			n.max(e, n.getColorPlayer(), PROFONDEUR);
+			n.max(e, n.getColorPlayer(), PROFONDEUR, 0);
 			plateau.dessinerPlateau();
 			System.out.println();
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(500);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
