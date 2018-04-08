@@ -96,17 +96,6 @@ public class JoueurReversi extends Joueur {
 		return etat.importance(couleurJoueur);
 	}
 
-	/**
-	 * Comparaison des performances des fonctions évaluation
-	 * en comparant le nombre de coup pour chaque joueurs.
-	 * Plus la partie est longue, plus intéressante est la partie
-	 *
-	 * @return
-	 */
-	public int compareEvaluations() {
-		return 0;
-	}
-
 	public int[] DecisionMinimax(EtatReversi etat, int profondeur, int numEval, boolean elagage) {
 		List<Integer> coupsPossibles = etat.coupPossibles(colorPlayer);
 		int[] bestCoup = new int[0];

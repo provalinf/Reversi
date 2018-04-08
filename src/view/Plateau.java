@@ -3,6 +3,9 @@ package view;
 import Etat.EtatReversi;
 
 import java.awt.*;
+import java.util.List;
+
+import static Etat.EtatReversi.NOIR;
 
 /**
  * Created by Valentin.
@@ -17,6 +20,8 @@ public class Plateau {
 	private static final int TAILLE_PION = TAILLE_CASE - 10;
 
 	private static final Color BACKGROUND_WINDOW = Color.DARK_GRAY;
+	private static final Color HELP_CASE_BLACK = new Color(0,0,0,60);
+	private static final Color HELP_CASE_WHITE = new Color(255,255,255,60);
 	private static final Color PLATEAU_COLOR = new Color(44, 115, 1);
 	private static final Color BORDER_CASE = new Color(27, 55, 1);
 
@@ -34,7 +39,7 @@ public class Plateau {
 		for (int row = 0; row < etat.getSize()[0]; row++) {
 			for (int col = 0; col < etat.getSize()[1]; col++) {
 				dessinerCases(row, col);
-				if (etat.getCase(row, col) == EtatReversi.NOIR) {
+				if (etat.getCase(row, col) == NOIR) {
 					dessinerPion(row, col, PION_BLACK);
 				} else if (etat.getCase(row, col) == EtatReversi.BLANC) {
 					dessinerPion(row, col, PION_WHITE);
@@ -88,4 +93,11 @@ public class Plateau {
 		return clicCase();
 	}
 
+	public void dessinerAide(List<Integer> coupsPossibles, int colorPlay) {
+		for (int numCase : coupsPossibles) {
+			int[] xy = etat.getCoordCase(numCase);
+			dw.setColor(colorPlay==NOIR ? HELP_CASE_BLACK:HELP_CASE_WHITE);
+			dw.fillRect(POS_PLATEAU + xy[1] * TAILLE_CASE, POS_PLATEAU + xy[0] * TAILLE_CASE, POS_PLATEAU + xy[1] * TAILLE_CASE + TAILLE_CASE, POS_PLATEAU + xy[0] * TAILLE_CASE + TAILLE_CASE);
+		}
+	}
 }
