@@ -1,5 +1,4 @@
 import Etat.EtatReversi;
-import joueur.Joueur;
 import joueur.JoueurReversi;
 import view.DrawingWindow;
 import view.Plateau;
@@ -17,6 +16,7 @@ public class Launcher {
 
 		DrawingWindow dw = new DrawingWindow("Reversi", 1200, 700);
 		Plateau plateau = new Plateau(dw, e);
+		b.debug(plateau);
 
 		//e.printNumCases();
 		/*e.printNumCases();
@@ -35,7 +35,23 @@ public class Launcher {
 			e.setCase(coordCaseClic[0], coordCaseClic[1], lastColor);
 			e.setCoup(coordCaseClic[0], coordCaseClic[1], lastColor);*/
 			System.out.println("BLANC");
-			b.max(e, b.getColorPlayer(), PROFONDEUR, 2);
+			//b.max(e, b.getColorPlayer(), PROFONDEUR, 2);
+
+
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+
+			int[] resB = b.DecisionMinimax(e, PROFONDEUR, 0);
+			if (resB.length == 1) {
+				System.out.println("Perdu");
+			} else {
+				e.setCase(resB[0], resB[1], b.getColorPlayer());
+				e.setCoup(resB[0], resB[1], b.getColorPlayer());
+			}
+			plateau.setEtat(e);
 			plateau.dessinerPlateau();
 			System.out.println();
 			try {
@@ -44,14 +60,25 @@ public class Launcher {
 				e1.printStackTrace();
 			}
 			System.out.println("NOIR");
-			n.max(e, n.getColorPlayer(), PROFONDEUR, 0);
+			//n.max(e, n.getColorPlayer(), PROFONDEUR, 0);
+			int[] resN = n.DecisionMinimax(e, PROFONDEUR, 0);
+			if (resN.length == 1) {
+				System.out.println("Perdu");
+			} else {
+				e.setCase(resN[0], resN[1], n.getColorPlayer());
+				e.setCoup(resN[0], resN[1], n.getColorPlayer());
+			}
+			plateau.setEtat(e);
 			plateau.dessinerPlateau();
 			System.out.println();
+			System.out.println("blanc"+e.getNbPion(BLANC));
+			System.out.println("noir"+e.getNbPion(NOIR));
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
+
 			System.out.println("Les " + lastColor + " doivent jouer");
 			//e.jeuTerminal(lastColor);
 			if (e.coupPossibles(lastColor == NOIR ? BLANC : NOIR).size() > 0) {

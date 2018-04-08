@@ -138,8 +138,11 @@ public class EtatReversi extends Etat {
 					} else if (getCase(rowCoord, col) == color) {
 						casesCaptures.addAll(casesPotentielles);
 						break;
+					} else {
+						break;
 					}
 				}
+				casesPotentielles.clear();
 			}
 
 			if (rowCoord + 1 < getSize()[0]) {
@@ -150,6 +153,8 @@ public class EtatReversi extends Etat {
 							casesPotentielles.add(new int[]{row, col});
 						} else if (getCase(row, col) == color) {
 							casesCaptures.addAll(casesPotentielles);
+							break;
+						} else {
 							break;
 						}
 						row++;
@@ -168,6 +173,8 @@ public class EtatReversi extends Etat {
 					} else if (getCase(row, colCoord) == color) {
 						casesCaptures.addAll(casesPotentielles);
 						break;
+					} else {
+						break;
 					}
 				}
 				casesPotentielles.clear();
@@ -181,6 +188,8 @@ public class EtatReversi extends Etat {
 							casesPotentielles.add(new int[]{row, col});
 						} else if (getCase(row, col) == color) {
 							casesCaptures.addAll(casesPotentielles);
+							break;
+						} else {
 							break;
 						}
 						row++;
@@ -200,6 +209,8 @@ public class EtatReversi extends Etat {
 					} else if (getCase(rowCoord, col) == color) {
 						casesCaptures.addAll(casesPotentielles);
 						break;
+					} else {
+						break;
 					}
 				}
 				casesPotentielles.clear();
@@ -213,6 +224,8 @@ public class EtatReversi extends Etat {
 							casesPotentielles.add(new int[]{row, col});
 						} else if (getCase(row, col) == color) {
 							casesCaptures.addAll(casesPotentielles);
+							break;
+						} else {
 							break;
 						}
 						row--;
@@ -232,6 +245,8 @@ public class EtatReversi extends Etat {
 					} else if (getCase(row, colCoord) == color) {
 						casesCaptures.addAll(casesPotentielles);
 						break;
+					} else {
+						break;
 					}
 				}
 				casesPotentielles.clear();
@@ -245,6 +260,8 @@ public class EtatReversi extends Etat {
 							casesPotentielles.add(new int[]{row, col});
 						} else if (getCase(row, col) == color) {
 							casesCaptures.addAll(casesPotentielles);
+							break;
+						} else {
 							break;
 						}
 						row--;
@@ -462,6 +479,18 @@ public class EtatReversi extends Etat {
 				}
 			}
 
+		}
+		return somme;
+	}
+
+	public int importance2(int couleur) {
+		int somme = 0;
+		for (int row = 0; row < getSize()[0]; row++) {
+			for (int col = 0; col < getSize()[1]; col++) {
+				if (getCase(row, col) == couleur) {
+					somme += tabPoids[row][col];
+				}
+			}
 		}
 		return somme;
 	}

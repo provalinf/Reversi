@@ -45,6 +45,10 @@ public class Plateau {
 		}
 	}
 
+	public void setEtat(EtatReversi etat) {
+		this.etat = etat;
+	}
+
 	public void dessinerCases(int posX, int posY) {
 		dw.setColor(PLATEAU_COLOR);
 		dw.fillRect(POS_PLATEAU + posY * TAILLE_CASE, POS_PLATEAU + posX * TAILLE_CASE, POS_PLATEAU + posY * TAILLE_CASE + TAILLE_CASE, POS_PLATEAU + posX * TAILLE_CASE + TAILLE_CASE);
