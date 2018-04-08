@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class EtatReversi extends Etat {
 	private int grille[][];
-	private int tabPoids[][];
+	public int[][] tabPoids;
 	private static final int POIDSMAX = 500;
 	private static final int SIZE = 8;
 	private static final int VIDE = -1;
@@ -431,7 +431,7 @@ public class EtatReversi extends Etat {
 	public void copieEtatReversi(EtatReversi etat) {
 		if (getSize()[0] != etat.getSize()[0] /*|| getSize()[1] != etat.getSize()[1]*/)
 			grille = new int[etat.getSize()[0]][];
-		for (int i = 0; i < getSize()[0]; i++) grille[i] = grille[i].clone();
+		for (int i = 0; i < getSize()[0]; i++) grille[i] = etat.grille[i].clone();
 	}
 
 	public EtatReversi duplicateEtatReversi() {

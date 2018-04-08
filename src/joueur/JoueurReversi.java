@@ -5,10 +5,12 @@ import view.Plateau;
 
 import java.util.List;
 
+import static Etat.EtatReversi.NOIR;
+
 public class JoueurReversi extends Joueur {
 
 	private int tourJoueur;
-	public static final int PROFONDEUR = 4;
+	public static final int PROFONDEUR = 5;
 	private Plateau plateau;
 
 
@@ -85,6 +87,17 @@ public class JoueurReversi extends Joueur {
 				bestCoup = coordCoup.clone();
 				scoreMax = score;
 				System.out.println("PAF -->>>>>>>>:"+score+" :"+bestCoup[0]+","+bestCoup[1]);
+				if (colorPlayer == NOIR) {
+					System.out.println();
+					for (int i = 0; i < etat.tabPoids.length; i++) {
+						for (int j = 0; j < etat.tabPoids[0].length; j++) {
+							System.out.print(etat.tabPoids[i][j]+"\t");
+						}
+						System.out.println();
+					}
+					System.out.println();
+					System.out.println();
+				}
 			}
 		}
 
@@ -92,6 +105,41 @@ public class JoueurReversi extends Joueur {
 	}
 
 	private int evaluation(EtatReversi etat, int profondeur, int couleurJoueur, int numEval) {
+		if (etat.coupPossibles(couleurJoueur).size() == 0) {
+			if (etat.getWinner() == couleurJoueur) return 10000;
+			if (etat.getWinner() == etat.couleurAdverse(couleurJoueur)) return -10000;
+			if (etat.getWinner() == -1) return 0;
+		}
+		if (profondeur == 0) {
+			if (numEval == 0) return eval0(etat, couleurJoueur);
+			if (numEval == 1) return eval1(etat, couleurJoueur);
+			if (numEval == 2) return eval2(etat, couleurJoueur);
+		}
+		List<Integer> coupsPossibles = etat.coupPossibles(couleurJoueur);
+		if (couleurJoueur != colorPlayer) {
+			int scoreMax = -10000;
+			for (Integer coupPossible : coupsPossibles) {
+				EtatReversi tmp = etat.duplicateEtatReversi();
+				int[] coordCoup = etat.getCoordCase(coupPossible);
+				tmp.setCase(coordCoup[0], coordCoup[1], couleurJoueur);
+				tmp.setCoup(coordCoup[0], coordCoup[1], couleurJoueur);
+				scoreMax = Math.max(scoreMax, evaluation(tmp, profondeur - 1, tmp.couleurAdverse(couleurJoueur), numEval));
+			}
+			return scoreMax;
+		} else {
+			int scoreMin = 10000;
+			for (Integer coupPossible : coupsPossibles) {
+				EtatReversi tmp = etat.duplicateEtatReversi();
+				int[] coordCoup = etat.getCoordCase(coupPossible);
+				tmp.setCase(coordCoup[0], coordCoup[1], couleurJoueur);
+				tmp.setCoup(coordCoup[0], coordCoup[1], couleurJoueur);
+				scoreMin = Math.min(scoreMin, evaluation(tmp, profondeur - 1, tmp.couleurAdverse(couleurJoueur), numEval));
+			}
+			return scoreMin;
+		}
+	}
+
+	private int evaluationAlphaBeta(EtatReversi etat, int profondeur, int couleurJoueur, int numEval) {
 		if (etat.coupPossibles(couleurJoueur).size() == 0) {
 			if (etat.getWinner() == couleurJoueur) return 10000;
 			if (etat.getWinner() == etat.couleurAdverse(couleurJoueur)) return -10000;

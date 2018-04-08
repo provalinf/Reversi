@@ -39,12 +39,12 @@ public class Launcher {
 
 
 			try {
-				Thread.sleep(500);
+				Thread.sleep(100);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
 
-			int[] resB = b.DecisionMinimax(e, PROFONDEUR, 0);
+			int[] resB = b.DecisionMinimax(e, PROFONDEUR, 1);
 			if (resB.length == 1) {
 				System.out.println("Perdu");
 			} else {
@@ -55,13 +55,13 @@ public class Launcher {
 			plateau.dessinerPlateau();
 			System.out.println();
 			try {
-				Thread.sleep(500);
+				Thread.sleep(100);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
 			System.out.println("NOIR");
 			//n.max(e, n.getColorPlayer(), PROFONDEUR, 0);
-			int[] resN = n.DecisionMinimax(e, PROFONDEUR, 0);
+			int[] resN = n.DecisionMinimax(e, PROFONDEUR, 2);
 			if (resN.length == 1) {
 				System.out.println("Perdu");
 			} else {
@@ -74,7 +74,7 @@ public class Launcher {
 			System.out.println("blanc"+e.getNbPion(BLANC));
 			System.out.println("noir"+e.getNbPion(NOIR));
 			try {
-				Thread.sleep(500);
+				Thread.sleep(100);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
@@ -84,7 +84,7 @@ public class Launcher {
 			if (e.coupPossibles(lastColor == NOIR ? BLANC : NOIR).size() > 0) {
 				lastColor = lastColor == NOIR ? BLANC : NOIR;
 			}
-			System.out.println(e.toString());
+			//System.out.println(e.toString());
 		}
 		System.out.println("Le jeu terminé");
 		System.out.println("Les " + e.getWinner() + " gagnent");
